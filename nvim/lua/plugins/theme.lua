@@ -1,0 +1,1 @@
+/home/zubstack/.config/omarchy/current/theme/neovim.lua
