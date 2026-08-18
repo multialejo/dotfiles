@@ -31,6 +31,11 @@ install.sh       report packages from packages.list that are missing
 
 - Comment that line out on distros where Omarchy is installed and already
   provides these extras (avoids duplicate PATH/init).
+- `apply.sh` is Omarchy-aware: when Omarchy is present it always skips the
+  entries Omarchy manages (`.bashrc`, `kitty`, `tmux`) - Omarchy re-copies
+  its upstream versions on every update, and symlinking them would let
+  Omarchy's `cp` write through the link and clobber the repo. `--force`
+  does not override this.
 - The port guards every alias with `command -v`: tools that aren't installed
   on the distro simply don't get aliases, no startup errors.
 - Omarchy's `fns/*` functions and custom completions are NOT ported (they
