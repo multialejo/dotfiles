@@ -10,6 +10,9 @@ config/          mirror of ~/.config apps + shell dotfiles
   nvim/          LazyVim setup
   kitty/         kitty.conf
   tmux/          tmux.conf
+  .bash-omarchy  Omarchy bash extras (envs, aliases, init) ported to work
+                 on any distro; sourced from .bashrc
+  .inputrc       readline config (from Omarchy, self-contained)
   .bashrc        standalone (user aliases, no Omarchy dependency)
   .bash_profile
 packages.list    essential packages, one per line, distro-agnostic
@@ -17,6 +20,21 @@ scripts/         personal scripts (pomodoro_timer.sh, rcsync, ueb-update)
 apply.sh         symlink config/ into the home directory
 install.sh       report packages from packages.list that are missing
 ```
+
+## Bash extras (.bash-omarchy)
+
+`.bashrc` includes `~/.bash-omarchy` with a single commented line:
+
+```sh
+[ -f ~/.bash-omarchy ] && source ~/.bash-omarchy
+```
+
+- Comment that line out on distros where Omarchy is installed and already
+  provides these extras (avoids duplicate PATH/init).
+- The port guards every alias with `command -v`: tools that aren't installed
+  on the distro simply don't get aliases, no startup errors.
+- Omarchy's `fns/*` functions and custom completions are NOT ported (they
+  depend on `$OMARCHY_PATH`) - see Next steps.
 
 ## Setup on a new machine
 
@@ -47,4 +65,6 @@ cd ~/dotfiles
   only `config/` + essential packages apply
 - `experiments/` (gitignored): clone popular rices (HyDE, END-4, archdotfiles)
   to study and cherry-pick ideas into `config/`
+- Port Omarchy `fns/*` functions and custom completions that don't depend on
+  omarchy bins into `.bash-omarchy`
 - `bin/` one-command-per-action CLI, Omarchy style

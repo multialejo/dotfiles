@@ -33,6 +33,8 @@ CONFIG_TARGET="$HOME/.config"
 HOME_DOTFILES=(
 	".bashrc"
 	".bash_profile"
+	".bash-omarchy"
+	".inputrc"
 )
 
 link() {
