@@ -1,0 +1,20 @@
+# Secrets
+.ssh/
+.env
+*.key
+*.pem
+
+# Secrets inside configs
+config/ssh/
+config/git/config.local
+
+# Editor backups
+*.backup.*
+*.bak
+
+# Experiments (cloning other rices, not part of the repo)
+experiments/
+
+# OS junk
+.DS_Store
+Thumbs.db

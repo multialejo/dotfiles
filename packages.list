@@ -1,0 +1,13 @@
+# Essential packages - single list, distro-agnostic
+# One package name per line, comments with #
+# install.sh reports which of these are missing on the current system
+chromium
+brave-bin
+opencode
+docker
+typora
+nautilus
+lazydocker
+gnome-calculator
+evince
+localsend

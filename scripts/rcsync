@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+RCLONE_REMOTE='gdrive'
+
+name="$(basename "$PWD")"
+remote="${RCLONE_REMOTE:-remote}"
+
+usage() {
+  echo "usage: ${0##*/} [-s|--subdir PATH] {check|push|pull}  [RCLONE_REMOTE=remote]" >&2
+  exit 1
+}
+
+subdir=""
+action=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --subdir|-s)
+      [[ $# -lt 2 ]] && usage
+      subdir="${2%/}"
+      shift 2
+      ;;
+    --subdir=*|-s=*)
+      subdir="${1#*=}"
+      subdir="${subdir%/}"
+      shift
+      ;;
+    check|push|pull)
+      action="$1"
+      shift
+      ;;
+    -*) echo "error: unknown flag '$1'" >&2; usage ;;
+    *)  echo "error: unexpected argument '$1'" >&2; usage ;;
+  esac
+done
+
+[[ -z "$action" ]] && usage
+
+src="$PWD"
+dst="$remote:$name"
+
+if [[ -n "$subdir" ]]; then
+  clean="${subdir#./}"
+  if [[ ! -d "$clean" ]]; then
+    echo "error: --subdir '$clean' is not an existing directory" >&2
+    exit 1
+  fi
+  src="$clean"
+  dst="$remote:$name/$clean"
+fi
+
+case "$action" in
+  push)  echo "PUSH to $dst" ;;
+  pull)  echo "PULL from $dst" ;;
+  check) echo "CHECK $dst vs $src" ;;
+esac
+
+case "$action" in
+  check) exec rclone check "$dst" "$src" ;;
+  push)  exec rclone sync "$src" "$dst" --progress ;;
+  pull)  exec rclone sync "$dst" "$src" --progress ;;
+  *) usage ;;
+esac
