@@ -15,6 +15,9 @@ config/git/config.local
 # Experiments (cloning other rices, not part of the repo)
 experiments/
 
+# Gentle-AI per-project generated artifacts
+.atl/
+
 # OS junk
 .DS_Store
 Thumbs.db
